@@ -1,0 +1,118 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: palm2pay-db
+    environment:
+      POSTGRES_USER: palm2pay
+      POSTGRES_PASSWORD: palm2pay_password_change_in_prod
+      POSTGRES_DB: palm2pay
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U palm2pay"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: palm2pay-redis
+    command: redis-server --requirepass palm2pay_redis_password_change_in_prod
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  api:
+    build:
+      context: ../../packages/api
+      dockerfile: Dockerfile
+    container_name: palm2pay-api
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DATABASE_URL: postgresql://palm2pay:palm2pay_password_change_in_prod@postgres:5432/palm2pay
+      REDIS_URL: redis://:palm2pay_redis_password_change_in_prod@redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      ENCRYPTION_KEY: your-32-character-encryption-key-here
+      BIOMETRIC_SERVICE_URL: http://biometric:8000
+      BIOMETRIC_API_KEY: dev-api-key-change-in-production
+      LOG_LEVEL: debug
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../packages/api:/app
+      - /app/node_modules
+
+  # Biometric Service (Python)
+  biometric:
+    build:
+      context: ../../packages/biometric
+      dockerfile: Dockerfile
+    container_name: palm2pay-biometric
+    environment:
+      BIOMETRIC_API_KEY: dev-api-key-change-in-production
+      LOG_LEVEL: info
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../packages/biometric:/app
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Web App (Next.js)
+  web:
+    build:
+      context: ../../apps/web
+      dockerfile: Dockerfile
+    container_name: palm2pay-web
+    environment:
+      API_URL: http://localhost:4000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../apps/web:/app
+      - /app/node_modules
+      - /app/.next
+
+  # Merchant Dashboard (Next.js)
+  merchant:
+    build:
+      context: ../../apps/merchant
+      dockerfile: Dockerfile
+    container_name: palm2pay-merchant
+    environment:
+      API_URL: http://localhost:4000
+    ports:
+      - "3002:3002"
+    volumes:
+      - ../../apps/merchant:/app
+      - /app/node_modules
+      - /app/.next
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    name: palm2pay-network

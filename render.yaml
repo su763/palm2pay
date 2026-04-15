@@ -1,0 +1,59 @@
+services:
+  # Backend API
+  - type: web
+    name: palm2pay-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd packages/api && npm install && npm run build
+    startCommand: cd packages/api && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: palm2pay-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: palm2pay-redis
+          type: redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: BIOMETRIC_SERVICE_URL
+        fromService:
+          name: palm2pay-biometric
+          type: web
+          property: hostUrl
+      - key: BIOMETRIC_API_KEY
+        generateValue: true
+
+  # Biometric Service
+  - type: web
+    name: palm2pay-biometric
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r packages/biometric/requirements.txt
+    startCommand: uvicorn packages.biometric.src.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BIOMETRIC_API_KEY
+        generateValue: true
+      - key: PORT
+        value: 8000
+
+  # Redis
+  - type: redis
+    name: palm2pay-redis
+    plan: free
+    region: oregon
+
+databases:
+  - name: palm2pay-db
+    plan: free
+    region: oregon

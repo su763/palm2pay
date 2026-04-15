@@ -1,0 +1,43 @@
+{
+  "name": "@palm2pay/api",
+  "version": "1.0.0",
+  "description": "Palm2Pay Backend API",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.10.1",
+    "hono": "^4.1.0",
+    "zod": "^3.22.4",
+    "zod-openapi": "^0.15.0",
+    "better-sqlite3": "^9.4.3",
+    "kysely": "^0.27.3",
+    "ioredis": "^5.3.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "stripe": "^14.21.0",
+    "aws-sdk": "^2.1560.0",
+    "node-fetch": "^3.3.2",
+    "pino": "^8.19.0",
+    "pino-http": "^9.0.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "rate-limiter-flexible": "^5.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.11.30",
+    "@types/uuid": "^9.0.8",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  }
+}

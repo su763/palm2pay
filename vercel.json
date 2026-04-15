@@ -1,0 +1,14 @@
+{
+  "projects": [
+    {
+      "name": "palm2pay-web",
+      "path": "apps/web",
+      "framework": "nextjs"
+    },
+    {
+      "name": "palm2pay-merchant",
+      "path": "apps/merchant",
+      "framework": "nextjs"
+    }
+  ]
+}
