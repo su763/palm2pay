@@ -1,91 +1,77 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import './tailwind.css';
 
 export default function Home() {
+  const [demoStep, setDemoStep] = useState(0);
+  const [isScanning, setIsScanning] = useState(false);
+
+  const handleScan = () => {
+    setIsScanning(true);
+    setTimeout(() => {
+      setIsScanning(false);
+      setDemoStep(3);
+    }, 2000);
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#1a1a2e] to-[#0f0f1a]">
+    <main>
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20">
-        <nav className="flex justify-between items-center mb-20">
-          <div className="flex items-center gap-2">
-            <HandIcon className="w-10 h-10 text-indigo-500" />
-            <span className="text-2xl font-bold text-white">Palm2Pay</span>
-          </div>
-          <div className="flex gap-6">
-            <a href="#features" className="text-gray-300 hover:text-white">
-              Features
-            </a>
-            <a href="#security" className="text-gray-300 hover:text-white">
-              Security
-            </a>
-          </div>
-        </nav>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
-              The Future of Payment is in Your{' '}
-              <span className="text-indigo-500">Palm</span>
-            </h1>
-            <p className="text-xl text-gray-400 mt-6">
-              Eliminate checkout friction. Pay securely by simply hovering your
-              palm over any Palm2Pay terminal. No cards, no phone, no wallet needed.
-            </p>
-            <div className="flex gap-4 mt-8">
-              <a
-                href="#demo"
-                className="bg-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-indigo-700"
-              >
-                See Demo
-              </a>
-              <a
-                href="#how-it-works"
-                className="border border-gray-600 text-gray-300 px-8 py-4 rounded-full text-lg font-semibold hover:border-gray-400"
-              >
-                Learn More
-              </a>
+      <section className="hero">
+        <div className="container">
+          <nav className="nav">
+            <div className="logo">
+              <HandIcon className="logo-icon" />
+              <span>Palm2Pay</span>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-indigo-500 rounded-full blur-3xl opacity-20 animate-pulse" />
-              <HandScanIllustration className="w-80 h-80 relative z-10" />
+            <div className="nav-links">
+              <a href="#features">Features</a>
+              <a href="#security">Security</a>
+              <a href="#demo">Demo</a>
             </div>
-          </motion.div>
+          </nav>
+
+          <div className="hero-content">
+            <div>
+              <h1>
+                The Future of Payment<br />
+                is in Your <span>Palm</span>
+              </h1>
+              <p>
+                Eliminate checkout friction. Pay securely by simply hovering your
+                palm over any Palm2Pay terminal. No cards, no phone, no wallet needed.
+              </p>
+              <div className="hero-buttons">
+                <a href="#demo" className="btn btn-primary">See Demo</a>
+                <a href="#how-it-works" className="btn btn-secondary">Learn More</a>
+              </div>
+            </div>
+            <div className="hero-illustration">
+              <div className="hero-glow"></div>
+              <HandScanSVG className="w-80 h-80" />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-[#0f0f1a]" id="features">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-white text-center mb-16">
-            How It Works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+      <section className="features" id="features">
+        <div className="container">
+          <h2 className="section-title">How It Works</h2>
+          <div className="features-grid">
             <FeatureCard
-              icon={<RegisterIcon />}
+              icon={<EyeIcon />}
               title="1. Enroll Your Palm"
               description="Scan your palm using our secure mobile app. Your biometric data is encrypted and stored safely."
             />
             <FeatureCard
-              icon={<LinkIcon />}
+              icon={<CardIcon />}
               title="2. Link Payment Method"
               description="Connect your credit card or bank account. Your funds are protected with bank-level security."
             />
             <FeatureCard
-              icon={<PayIcon />}
+              icon={<HandPayIcon />}
               title="3. Pay with Palm"
               description="At checkout, simply hover your palm over the scanner. Payment complete in seconds."
             />
@@ -94,78 +80,128 @@ export default function Home() {
       </section>
 
       {/* Security Section */}
-      <section className="py-20" id="security">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <ShieldIcon className="w-20 h-20 text-green-500 mx-auto mb-6" />
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Bank-Level Security
-            </h2>
-            <p className="text-xl text-gray-400 mb-8">
+      <section className="security" id="security">
+        <div className="container">
+          <div className="security-content">
+            <ShieldIcon className="security-icon" />
+            <h2>Bank-Level Security</h2>
+            <p>
               Your biometric data is encrypted end-to-end. We use advanced liveness
               detection to prevent fraud, and your palm template can never be
               reverse-engineered to recreate your hand.
             </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <SecurityBadge title="PCI-DSS Compliant" />
-              <SecurityBadge title="End-to-End Encryption" />
-              <SecurityBadge title="Liveness Detection" />
-              <SecurityBadge title="Fraud Monitoring" />
+            <div className="security-badges">
+              <Badge text="PCI-DSS Compliant" />
+              <Badge text="End-to-End Encryption" />
+              <Badge text="Liveness Detection" />
+              <Badge text="Fraud Monitoring" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Demo Section */}
-      <section className="py-20 bg-[#0f0f1a]" id="demo">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Try Palm2Pay Demo
-            </h2>
-            <p className="text-xl text-gray-400 mb-8">
-              Experience the future of payments. This demo shows how quick and seamless palm payments can be.
-            </p>
-            <DemoComponent />
+      <section className="demo" id="demo">
+        <div className="container">
+          <h2 className="section-title">Try Palm2Pay Demo</h2>
+          <div className="demo-container">
+            <div className="demo-box">
+              <div className="demo-header">
+                <div className="demo-icon">
+                  {demoStep === 0 && '👋'}
+                  {demoStep === 1 && '💳'}
+                  {demoStep === 2 && '🖐️'}
+                  {demoStep === 3 && '✅'}
+                </div>
+                <h3>
+                  {demoStep === 0 && "Welcome to Palm2Pay!"}
+                  {demoStep === 1 && "Payment Amount"}
+                  {demoStep === 2 && "Scan Your Palm"}
+                  {demoStep === 3 && "Payment Successful!"}
+                </h3>
+                <p>
+                  {demoStep === 0 && "Click Start to begin the demo"}
+                  {demoStep === 1 && "$25.00 for coffee purchase"}
+                  {demoStep === 2 && "Position your palm on the scanner"}
+                  {demoStep === 3 && "Thank you for your purchase!"}
+                </p>
+              </div>
+
+              {demoStep === 1 && (
+                <div className="demo-amount">$25.00</div>
+              )}
+
+              {demoStep === 2 && (
+                <div className="demo-scanner">
+                  <HandScanSVG />
+                  {isScanning && <p className="scanning-text">Scanning...</p>}
+                </div>
+              )}
+
+              <div className="demo-buttons">
+                {demoStep === 0 && (
+                  <button className="demo-btn" onClick={() => setDemoStep(1)}>
+                    Start Demo
+                  </button>
+                )}
+                {demoStep === 1 && (
+                  <button className="demo-btn" onClick={() => setDemoStep(2)}>
+                    Continue
+                  </button>
+                )}
+                {demoStep === 2 && (
+                  <button
+                    className="demo-btn"
+                    onClick={handleScan}
+                    disabled={isScanning}
+                  >
+                    {isScanning ? 'Scanning...' : 'Scan Palm'}
+                  </button>
+                )}
+                {demoStep === 3 && (
+                  <button className="demo-btn" onClick={() => setDemoStep(0)}>
+                    Try Again
+                  </button>
+                )}
+              </div>
+
+              <div className="demo-dots">
+                {[0, 1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className={`dot ${i === demoStep ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-indigo-600">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Leave Your Wallet Behind?
-          </h2>
-          <p className="text-xl text-indigo-200 mb-8">
-            Join thousands of users who are already paying with their palms.
-          </p>
-          <a
-            href="#"
-            className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 inline-block"
-          >
-            Create Free Account
-          </a>
+      <section className="cta">
+        <div className="container">
+          <h2>Ready to Leave Your Wallet Behind?</h2>
+          <p>Join thousands of users who are already paying with their palms.</p>
+          <a href="#" className="cta-btn">Create Free Account</a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-[#0f0f1a] border-t border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <HandIcon className="w-8 h-8 text-indigo-500" />
-              <span className="text-xl font-bold text-white">Palm2Pay</span>
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-logo">
+              <HandIcon className="logo-icon" />
+              <span>Palm2Pay</span>
             </div>
-            <div className="flex gap-6 text-gray-400">
-              <a href="#" className="hover:text-white">Privacy</a>
-              <a href="#" className="hover:text-white">Terms</a>
-              <a href="#" className="hover:text-white">Contact</a>
+            <div className="footer-links">
+              <a href="#">Privacy</a>
+              <a href="#">Terms</a>
+              <a href="#">Contact</a>
             </div>
           </div>
-          <p className="text-center text-gray-500 mt-8">
-            © 2026 Palm2Pay. All rights reserved.
-          </p>
+          <p className="footer-copyright">© 2026 Palm2Pay. All rights reserved.</p>
         </div>
       </footer>
     </main>
@@ -174,133 +210,19 @@ export default function Home() {
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-[#1a1a2e] p-8 rounded-2xl"
-    >
-      <div className="w-16 h-16 bg-indigo-600 rounded-xl flex items-center justify-center mb-6">
-        {icon}
-      </div>
-      <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
-      <p className="text-gray-400">{description}</p>
-    </motion.div>
-  );
-}
-
-function SecurityBadge({ title }: { title: string }) {
-  return (
-    <div className="flex items-center gap-3 justify-center">
-      <CheckIcon className="w-6 h-6 text-green-500" />
-      <span className="text-gray-300">{title}</span>
+    <div className="feature-card">
+      <div className="feature-icon">{icon}</div>
+      <h3>{title}</h3>
+      <p>{description}</p>
     </div>
   );
 }
 
-function DemoComponent() {
-  const [step, setStep] = useState(0);
-  const [isScanning, setIsScanning] = useState(false);
-
-  const handleScan = () => {
-    setIsScanning(true);
-    setTimeout(() => {
-      setIsScanning(false);
-      setStep(3);
-    }, 2000);
-  };
-
+function Badge({ text }: { text: string }) {
   return (
-    <div className="bg-[#1a1a2e] rounded-2xl p-8 max-w-md mx-auto">
-      <div className="text-center mb-6">
-        <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-          {step === 0 && <span className="text-3xl">👋</span>}
-          {step === 1 && <span className="text-3xl">📱</span>}
-          {step === 2 && <span className="text-3xl">🖐️</span>}
-          {step === 3 && <span className="text-3xl">✅</span>}
-        </div>
-        <h3 className="text-xl font-bold text-white mb-2">
-          {step === 0 && "Welcome to Palm2Pay!"}
-          {step === 1 && "Enter Payment Amount"}
-          {step === 2 && "Scan Your Palm"}
-          {step === 3 && "Payment Successful!"}
-        </h3>
-        <p className="text-gray-400">
-          {step === 0 && "Click Start to begin the demo"}
-          {step === 1 && "Enter $25.00 for coffee"}
-          {step === 2 && "Position your palm on the scanner"}
-          {step === 3 && "Thank you for your purchase!"}
-        </p>
-      </div>
-
-      {step === 1 && (
-        <div className="mb-6">
-          <div className="text-4xl font-bold text-white text-center">$25.00</div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="mb-6 p-4 bg-[#0f0f1a] rounded-xl">
-          <div className="h-32 flex items-center justify-center">
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            >
-              <HandScanIllustration className="w-24 h-24 text-indigo-500" />
-            </motion.div>
-          </div>
-          {isScanning && (
-            <div className="text-center text-green-500">
-              Scanning...
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="flex gap-3">
-        {step === 0 && (
-          <button
-            onClick={() => setStep(1)}
-            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
-          >
-            Start Demo
-          </button>
-        )}
-        {step === 1 && (
-          <button
-            onClick={() => setStep(2)}
-            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
-          >
-            Continue
-          </button>
-        )}
-        {step === 2 && (
-          <button
-            onClick={handleScan}
-            disabled={isScanning}
-            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
-          >
-            {isScanning ? 'Scanning...' : 'Scan Palm'}
-          </button>
-        )}
-        {step === 3 && (
-          <button
-            onClick={() => setStep(0)}
-            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
-          >
-            Try Again
-          </button>
-        )}
-      </div>
-
-      <div className="flex justify-center gap-2 mt-6">
-        {[0, 1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className={`w-2 h-2 rounded-full ${
-              i === step ? 'bg-indigo-500' : 'bg-gray-600'
-            }`}
-          />
-        ))}
-      </div>
+    <div className="badge">
+      <CheckIcon />
+      <span>{text}</span>
     </div>
   );
 }
@@ -314,9 +236,9 @@ function HandIcon({ className }: { className?: string }) {
   );
 }
 
-function HandScanIllustration({ className }: { className?: string }) {
+function HandScanSVG({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 200 200" fill="none">
+    <svg className={className || 'w-32 h-32'} viewBox="0 0 200 200" fill="none">
       <circle cx="100" cy="100" r="80" stroke="#6366f1" strokeWidth="2" fill="none" />
       <circle cx="100" cy="100" r="60" stroke="#6366f1" strokeWidth="1" strokeDasharray="4 4" fill="none" />
       <path d="M100 40 L100 70 M100 130 L100 160 M40 100 L70 100 M130 100 L160 100" stroke="#6366f1" strokeWidth="2" />
@@ -326,26 +248,26 @@ function HandScanIllustration({ className }: { className?: string }) {
   );
 }
 
-function RegisterIcon() {
+function EyeIcon() {
   return (
-    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="32" height="32">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
     </svg>
   );
 }
 
-function LinkIcon() {
+function CardIcon() {
   return (
-    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="32" height="32">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
     </svg>
   );
 }
 
-function PayIcon() {
+function HandPayIcon() {
   return (
-    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="32" height="32">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
     </svg>
   );
@@ -359,9 +281,9 @@ function ShieldIcon({ className }: { className?: string }) {
   );
 }
 
-function CheckIcon({ className }: { className?: string }) {
+function CheckIcon() {
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
     </svg>
   );
