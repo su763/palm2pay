@@ -5,8 +5,8 @@ import './tailwind.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Palm2Pay - The Future of Payment is in Your Palm',
-  description: 'Biometric payment ecosystem using palm recognition technology',
+  title: 'Palm2Pay Merchant Dashboard',
+  description: 'Merchant point-of-sale dashboard for Palm2Pay biometric payments',
 };
 
 export default function RootLayout({

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -15,15 +14,12 @@ export default function Home() {
             <span className="text-2xl font-bold text-white">Palm2Pay</span>
           </div>
           <div className="flex gap-6">
-            <Link href="/login" className="text-gray-300 hover:text-white">
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700"
-            >
-              Get Started
-            </Link>
+            <a href="#features" className="text-gray-300 hover:text-white">
+              Features
+            </a>
+            <a href="#security" className="text-gray-300 hover:text-white">
+              Security
+            </a>
           </div>
         </nav>
 
@@ -42,18 +38,18 @@ export default function Home() {
               palm over any Palm2Pay terminal. No cards, no phone, no wallet needed.
             </p>
             <div className="flex gap-4 mt-8">
-              <Link
-                href="/register"
+              <a
+                href="#demo"
                 className="bg-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-indigo-700"
               >
-                Start Using Palm2Pay
-              </Link>
-              <Link
+                See Demo
+              </a>
+              <a
                 href="#how-it-works"
                 className="border border-gray-600 text-gray-300 px-8 py-4 rounded-full text-lg font-semibold hover:border-gray-400"
               >
                 Learn More
-              </Link>
+              </a>
             </div>
           </motion.div>
 
@@ -72,7 +68,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-[#0f0f1a]" id="how-it-works">
+      <section className="py-20 bg-[#0f0f1a]" id="features">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-white text-center mb-16">
             How It Works
@@ -98,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Security Section */}
-      <section className="py-20">
+      <section className="py-20" id="security">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <ShieldIcon className="w-20 h-20 text-green-500 mx-auto mb-6" />
@@ -120,6 +116,21 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Demo Section */}
+      <section className="py-20 bg-[#0f0f1a]" id="demo">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Try Palm2Pay Demo
+            </h2>
+            <p className="text-xl text-gray-400 mb-8">
+              Experience the future of payments. This demo shows how quick and seamless palm payments can be.
+            </p>
+            <DemoComponent />
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-indigo-600">
         <div className="container mx-auto px-4 text-center">
@@ -129,12 +140,12 @@ export default function Home() {
           <p className="text-xl text-indigo-200 mb-8">
             Join thousands of users who are already paying with their palms.
           </p>
-          <Link
-            href="/register"
+          <a
+            href="#"
             className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 inline-block"
           >
             Create Free Account
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -181,6 +192,115 @@ function SecurityBadge({ title }: { title: string }) {
     <div className="flex items-center gap-3 justify-center">
       <CheckIcon className="w-6 h-6 text-green-500" />
       <span className="text-gray-300">{title}</span>
+    </div>
+  );
+}
+
+function DemoComponent() {
+  const [step, setStep] = useState(0);
+  const [isScanning, setIsScanning] = useState(false);
+
+  const handleScan = () => {
+    setIsScanning(true);
+    setTimeout(() => {
+      setIsScanning(false);
+      setStep(3);
+    }, 2000);
+  };
+
+  return (
+    <div className="bg-[#1a1a2e] rounded-2xl p-8 max-w-md mx-auto">
+      <div className="text-center mb-6">
+        <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          {step === 0 && <span className="text-3xl">👋</span>}
+          {step === 1 && <span className="text-3xl">📱</span>}
+          {step === 2 && <span className="text-3xl">🖐️</span>}
+          {step === 3 && <span className="text-3xl">✅</span>}
+        </div>
+        <h3 className="text-xl font-bold text-white mb-2">
+          {step === 0 && "Welcome to Palm2Pay!"}
+          {step === 1 && "Enter Payment Amount"}
+          {step === 2 && "Scan Your Palm"}
+          {step === 3 && "Payment Successful!"}
+        </h3>
+        <p className="text-gray-400">
+          {step === 0 && "Click Start to begin the demo"}
+          {step === 1 && "Enter $25.00 for coffee"}
+          {step === 2 && "Position your palm on the scanner"}
+          {step === 3 && "Thank you for your purchase!"}
+        </p>
+      </div>
+
+      {step === 1 && (
+        <div className="mb-6">
+          <div className="text-4xl font-bold text-white text-center">$25.00</div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="mb-6 p-4 bg-[#0f0f1a] rounded-xl">
+          <div className="h-32 flex items-center justify-center">
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ repeat: Infinity, duration: 1 }}
+            >
+              <HandScanIllustration className="w-24 h-24 text-indigo-500" />
+            </motion.div>
+          </div>
+          {isScanning && (
+            <div className="text-center text-green-500">
+              Scanning...
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="flex gap-3">
+        {step === 0 && (
+          <button
+            onClick={() => setStep(1)}
+            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
+          >
+            Start Demo
+          </button>
+        )}
+        {step === 1 && (
+          <button
+            onClick={() => setStep(2)}
+            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
+          >
+            Continue
+          </button>
+        )}
+        {step === 2 && (
+          <button
+            onClick={handleScan}
+            disabled={isScanning}
+            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+          >
+            {isScanning ? 'Scanning...' : 'Scan Palm'}
+          </button>
+        )}
+        {step === 3 && (
+          <button
+            onClick={() => setStep(0)}
+            className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
+          >
+            Try Again
+          </button>
+        )}
+      </div>
+
+      <div className="flex justify-center gap-2 mt-6">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`w-2 h-2 rounded-full ${
+              i === step ? 'bg-indigo-500' : 'bg-gray-600'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

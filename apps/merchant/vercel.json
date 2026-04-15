@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "name": "palm2pay-merchant",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/next"
     }
   ],
-  "env": {
-    "API_URL": "https://your-api-url.onrender.com"
-  }
+  "outputDirectory": ".next"
 }
