@@ -1,4 +1,8 @@
-/* Palm2Pay Styles - No Tailwind Required */
+/* Palm2Pay Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
